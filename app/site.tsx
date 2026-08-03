@@ -113,7 +113,7 @@ function Header() {
   </>;
 }
 
-function Trust() { return <div class="trust" href="/about#reviews"><b>★ 4.7/5</b><span>~5,000 verified public reviews</span><span><a href="https://share.google/rN5284G823XrWMSde"><strong>Google (1,551)</strong></a> &amp; <a href="https://www.justdial.com/Hyderabad/Smartsteps-Consulting-Pvt-Ltd-Near-Manepally-Jewellers-Punjagutta/040PXX40-XX40-120526141020-Q5M9_BZDET"><strong>JustDial (3,409)</strong></a></span></div> }
+function Trust() { return <div class="trust"><b>★ 4.7/5</b><span>~5,000 verified public reviews</span><span><a href="https://share.google/rN5284G823XrWMSde"><strong>Google (1,551)</strong></a> &amp; <a href="https://www.justdial.com/Hyderabad/Smartsteps-Consulting-Pvt-Ltd-Near-Manepally-Jewellers-Punjagutta/040PXX40-XX40-120526141020-Q5M9_BZDET"><strong>JustDial (3,409)</strong></a></span></div> }
 function Stats(){ return <section className="stats">{[["8,000+","Professionals Trained"],["6,000+","Successful Placements"],["323","Batches"],["16+","Years"]].map(x=><div key={x[1]}><b>{x[0]}</b><span>{x[1]}</span></div>)}</section> }
 function CTA(){ return <section className="final-cta"><div><span className="eyebrow">Your next step</span><h2>Your career in global finance operations starts with one conversation.</h2><p>Honest advice. No pressure. If a program isn’t right for you, we’ll say so.</p></div><div className="actions"><a className="btn light" href="/contact">Book Free Counselling</a><a className="btn outline-light" href={WA}>WhatsApp Us</a></div></section> }
 
