@@ -113,7 +113,7 @@ function Header() {
   </>;
 }
 
-function Trust() { return <a className="trust" href="/about#reviews"><b>★ 4.7/5</b><span>~5,000 verified public reviews</span><span>Google (1,551) & JustDial (3,409)</span><strong>Read them yourself →</strong></a> }
+function Trust() { return <div className="trust"><b>★ 4.7/5</b><span>~5,000 verified public reviews</span><span>Google (1,551) & JustDial (3,409)</span><strong>Read them yourself →</strong></div> }
 function Stats(){ return <section className="stats">{[["8,000+","Professionals Trained"],["6,000+","Successful Placements"],["323","Batches"],["16+","Years"]].map(x=><div key={x[1]}><b>{x[0]}</b><span>{x[1]}</span></div>)}</section> }
 function CTA(){ return <section className="final-cta"><div><span className="eyebrow">Your next step</span><h2>Your career in global finance operations starts with one conversation.</h2><p>Honest advice. No pressure. If a program isn’t right for you, we’ll say so.</p></div><div className="actions"><a className="btn light" href="/contact">Book Free Counselling</a><a className="btn outline-light" href={WA}>WhatsApp Us</a></div></section> }
 
