@@ -7,7 +7,7 @@ export async function POST(req: Request) {
   const r = await fetch("https://www.google.com/recaptcha/api/siteverify", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: `secret=${process.env.6LfjQ3MtAAAAAJAq5bq-o5wuSrD_QcmEhV1pi9Y4}&response=${token}`,
+    body: `secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${token}`,
   });
   const data = await r.json();
 
