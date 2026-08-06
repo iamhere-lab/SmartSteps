@@ -3,7 +3,7 @@
 import { FormEvent, useState, useRef } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 
-const LOGO = "img/ss-new-logo.png";
+const LOGO = "/img/ss-new-logo.png";
 const WA = "https://wa.me/919715718718?text=Hi%20SmartSteps%2C%20I%27d%20like%20free%20career%20counselling.";
 const employers = ["Wells Fargo","BNY Mellon","Accenture","Genpact","IBM","Cognizant","FactSet","Infosys","Wipro","Capgemini","HSBC","Amazon","Bank of America","TCS","HCL","Broadridge","BNP Paribas","ADP","Invesco","Alter Domus","CITCO Funds","Apex Group","IQ-EQ","Corteva"];
 
