@@ -165,21 +165,23 @@ function Contact(){
  const router = useRouter();
  const recaptchaRef = useRef<ReCAPTCHA>(null);
  const [captchaError, setCaptchaError] = useState("");
+ const [submitting, setSubmitting] = useState(false);
  const submit = async (e:FormEvent<HTMLFormElement>) => {
   e.preventDefault();
   setCaptchaError("");
   const form = e.currentTarget;
   const token = recaptchaRef.current?.getValue();
   if(!token){ setCaptchaError("Please complete the captcha."); return; }
-  try{
-   const res = await fetch("/api/verify-captcha",{ method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({token}) });
-   const data = await res.json();
-   if(!data.success){ setCaptchaError("Captcha verification failed. Please try again."); recaptchaRef.current?.reset(); return; }
-  }catch{ setCaptchaError("Could not verify captcha. Please try again."); recaptchaRef.current?.reset(); return; }
   const fd = new FormData(form);
+  setSubmitting(true);
+  try{
+   const res = await fetch("/api/submit-lead",{ method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({ token, name:fd.get("name"), phone:fd.get("phone"), course:fd.get("course") }) });
+   const data = await res.json();
+   if(!data.success){ setCaptchaError(data.error==="captcha"?"Captcha verification failed. Please try again.":"Something went wrong. Please try again or call us."); recaptchaRef.current?.reset(); setSubmitting(false); return; }
+  }catch{ setCaptchaError("Could not submit. Please try again or call us."); recaptchaRef.current?.reset(); setSubmitting(false); return; }
   router.push(`/thank-you?course=${encodeURIComponent(String(fd.get("course")||""))}`);
  };
- return <main><section className="contact"><div><span className="eyebrow">Free career counselling</span><h1>Start with a conversation <em>not a commitment.</em></h1><p>We’ll map your background to the right program—honestly, even when the answer is that a program isn’t right for you.</p><div className="contact-list"><a href="tel:+919715718718"><b>Main line</b>+91-9715 718 718</a><a href="tel:+917337087666"><b>Course counsellor</b>+91-733 708 7666</a><a href="tel:+919030019497"><b>Course counsellor</b>+91-9030019497</a><a href="mailto:lavanyakumar@smartsteps.in"><b>Email</b>lavanyakumar@smartsteps.in</a><p><b>Visit</b>501 & 502, 5th Floor, Topaz Building, Punjagutta, Hyderabad – 500082<br/><small>Next to Manepally Jewellers</small></p></div></div><form onSubmit={submit}><Trust/><h2>Tell us where you are.</h2><label>Your name<input name="name" required placeholder="Enter your full name"/></label><label>Phone number<input name="phone" required inputMode="tel" placeholder="+91"/></label><label>Course of interest<select name="course"><option>Global Accounting & Finance Program</option><option>Oracle EBS and Fusion Program</option><option>KYC & AML Analyst Program</option><option>Accounting Analyst Course</option><option>PE Fund Accounting</option><option>Not sure — help me choose</option></select></label><ReCAPTCHA ref={recaptchaRef} sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!} /><p style={{color:"#c0392b",margin:0}}><small>{captchaError}</small></p><button className="btn primary">Request Free Counselling</button><small>By submitting, you agree to be contacted by SmartSteps.</small></form></section></main>
+ return <main><section className="contact"><div><span className="eyebrow">Free career counselling</span><h1>Start with a conversation <em>not a commitment.</em></h1><p>We’ll map your background to the right program—honestly, even when the answer is that a program isn’t right for you.</p><div className="contact-list"><a href="tel:+919715718718"><b>Main line</b>+91-9715 718 718</a><a href="tel:+917337087666"><b>Course counsellor</b>+91-733 708 7666</a><a href="tel:+919030019497"><b>Course counsellor</b>+91-9030019497</a><a href="mailto:lavanyakumar@smartsteps.in"><b>Email</b>lavanyakumar@smartsteps.in</a><p><b>Visit</b>501 & 502, 5th Floor, Topaz Building, Punjagutta, Hyderabad – 500082<br/><small>Next to Manepally Jewellers</small></p></div></div><form onSubmit={submit}><Trust/><h2>Tell us where you are.</h2><label>Your name<input name="name" required placeholder="Enter your full name"/></label><label>Phone number<input name="phone" required inputMode="tel" placeholder="+91"/></label><label>Course of interest<select name="course"><option>Global Accounting & Finance Program</option><option>Oracle EBS and Fusion Program</option><option>KYC & AML Analyst Program</option><option>Accounting Analyst Course</option><option>PE Fund Accounting</option><option>Not sure — help me choose</option></select></label><ReCAPTCHA ref={recaptchaRef} sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!} /><p style={{color:"#c0392b",margin:0}}><small>{captchaError}</small></p><button className="btn primary" disabled={submitting}>{submitting?"Submitting…":"Request Free Counselling"}</button><small>By submitting, you agree to be contacted by SmartSteps.</small></form></section></main>
 }
 
 function ThankYou(){
