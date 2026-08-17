@@ -1,6 +1,7 @@
 "use client";
 
-import { FormEvent, useState, useRef } from "react";
+import { FormEvent, useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import ReCAPTCHA from "react-google-recaptcha";
 
 const LOGO = "/ss-new-logo.png";
@@ -161,6 +162,7 @@ function Certifications(){
 }
 
 function Contact(){
+ const router = useRouter();
  const recaptchaRef = useRef<ReCAPTCHA>(null);
  const [captchaError, setCaptchaError] = useState("");
  const submit = async (e:FormEvent<HTMLFormElement>) => {
@@ -176,10 +178,14 @@ function Contact(){
   }catch{ setCaptchaError("Could not verify captcha. Please try again."); recaptchaRef.current?.reset(); return; }
   const fd = new FormData(form);
   window.open(`https://wa.me/919715718718?text=${encodeURIComponent(`Hi SmartSteps, I am ${fd.get("name")}. I’m interested in ${fd.get("course")}. Please contact me on ${fd.get("phone")}.`)}`,"_blank");
-  recaptchaRef.current?.reset();
-  form.reset();
+  router.push(`/thank-you?course=${encodeURIComponent(String(fd.get("course")||""))}`);
  };
  return <main><section className="contact"><div><span className="eyebrow">Free career counselling</span><h1>Start with a conversation <em>not a commitment.</em></h1><p>We’ll map your background to the right program—honestly, even when the answer is that a program isn’t right for you.</p><div className="contact-list"><a href="tel:+919715718718"><b>Main line</b>+91-9715 718 718</a><a href="tel:+917337087666"><b>Course counsellor</b>+91-733 708 7666</a><a href="tel:+919030019497"><b>Course counsellor</b>+91-9030019497</a><a href="mailto:lavanyakumar@smartsteps.in"><b>Email</b>lavanyakumar@smartsteps.in</a><p><b>Visit</b>501 & 502, 5th Floor, Topaz Building, Punjagutta, Hyderabad – 500082<br/><small>Next to Manepally Jewellers</small></p></div></div><form onSubmit={submit}><Trust/><h2>Tell us where you are.</h2><label>Your name<input name="name" required placeholder="Enter your full name"/></label><label>Phone number<input name="phone" required inputMode="tel" placeholder="+91"/></label><label>Course of interest<select name="course"><option>Global Accounting & Finance Program</option><option>Oracle EBS and Fusion Program</option><option>KYC & AML Analyst Program</option><option>Accounting Analyst Course</option><option>PE Fund Accounting</option><option>Not sure — help me choose</option></select></label><ReCAPTCHA ref={recaptchaRef} sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!} /><p style={{color:"#c0392b",margin:0}}><small>{captchaError}</small></p><button className="btn primary">Request Free Counselling</button><small>By submitting, you agree to be contacted by SmartSteps.</small></form></section></main>
+}
+
+function ThankYou(){
+ useEffect(()=>{ (window as any).fbq?.("track","Lead"); },[]);
+ return <main><section className="inner-hero"><span className="eyebrow">Request received</span><h1>Thank you.<br/><em>We’ll call you shortly.</em></h1><p>A course counsellor will reach out within one working day. If you’d like to talk sooner, call us on <a href="tel:+919715718718">+91-9715 718 718</a> or continue the conversation on WhatsApp.</p><div className="actions" style={{marginTop:"1.5rem",display:"flex",gap:"1rem",justifyContent:"center",flexWrap:"wrap"}}><a className="btn primary" href={WA}>Chat on WhatsApp</a><a className="btn secondary" href="/">Back to home</a></div></section><Trust/><CTA/></main>
 }
 
 export default function SitePage({page}:{page:string}){
@@ -189,6 +195,7 @@ export default function SitePage({page}:{page:string}){
  else if(page==="about") content=<About/>;
  else if(page==="certifications") content=<Certifications/>;
  else if(page==="contact") content=<Contact/>;
+ else if(page==="thank-you") content=<ThankYou/>;
  else content=<Home/>;
  return <><Header/>{content}<Footer/></>;
 }
